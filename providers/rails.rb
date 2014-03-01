@@ -71,8 +71,10 @@ action :before_migrate do
     common_groups = %w{development test cucumber staging production}
     common_groups += new_resource.bundler_without_groups
     common_groups -= [new_resource.environment_name]
+    common_groups -= new_resource.bundler_with_groups
     common_groups = common_groups.join(' ')
     bundler_deployment = new_resource.bundler_deployment
+    bundle_options = new_resource.bundle_options
     if bundler_deployment.nil?
       # Check for a Gemfile.lock
       bundler_deployment = ::File.exists?(::File.join(new_resource.release_path, "Gemfile.lock"))
